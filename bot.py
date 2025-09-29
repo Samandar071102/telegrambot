@@ -1,17 +1,13 @@
 import json
 import asyncio
-import os
 from aiogram import Bot, Dispatcher, types
 from aiogram.filters import Command
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 from openpyxl import Workbook, load_workbook
+import os
 
-# Muhit o'zgaruvchilaridan olish
-TOKEN = os.getenv("BOT_TOKEN")        # Render Environment Variables dan keladi
-CHANNEL_ID = os.getenv("CHANNEL_ID")  # masalan: @mychannel
-
-if not TOKEN or not CHANNEL_ID:
-    raise ValueError("❌ BOT_TOKEN va CHANNEL_ID muhit o'zgaruvchilari topilmadi!")
+TOKEN = "BOT_TOKENINGIZNI_KIRITIN"   # BotFather dan olingan token
+CHANNEL_ID = "@kanal_nomi"           # Kanal username
 
 # Excel faylni yaratish
 if not os.path.exists("users.xlsx"):
@@ -20,37 +16,29 @@ if not os.path.exists("users.xlsx"):
     ws.append(["UserID", "Ism", "Familiya", "Telefon", "Qiziqishi"])
     wb.save("users.xlsx")
 
+# Bot va dispatcher
 bot = Bot(token=TOKEN)
 dp = Dispatcher()
 
-# Vaqtincha foydalanuvchi ma’lumotlari
+# Ma’lumotlarni vaqtincha saqlash
 user_data = {}
 
+# Start komandasi
 @dp.message(Command("start"))
 async def start(message: types.Message):
-    try:
-        member = await bot.get_chat_member(CHANNEL_ID, message.from_user.id)
-        if member.status == "left":
-            await message.answer(
-                "❗ Botdan foydalanish uchun kanalga obuna bo‘ling",
-                reply_markup=types.InlineKeyboardMarkup(
-                    inline_keyboard=[
-                        [types.InlineKeyboardButton(
-                            text="📢 Kanalga obuna bo‘lish",
-                            url=f"https://t.me/{CHANNEL_ID[1:]}"
-                        )]
-                    ]
-                )
-            )
-            return
-    except Exception:
-        await message.answer("⚠️ Kanal topilmadi yoki noto‘g‘ri kiritilgan.")
+    member = await bot.get_chat_member(CHANNEL_ID, message.from_user.id)
+    if member.status == "left":
+        await message.answer("❗ Botdan foydalanish uchun kanalga obuna bo‘ling", 
+                             reply_markup=types.InlineKeyboardMarkup(
+                                 inline_keyboard=[
+                                     [types.InlineKeyboardButton(text="📢 Kanalga obuna bo‘lish", url=f"https://t.me/{CHANNEL_ID[1:]}")]
+                                 ]
+                             ))
         return
-
     await message.answer("Assalomu alaykum! Ismingizni kiriting:")
     user_data[message.from_user.id] = {}
 
-# Ism
+# Ism qabul qilish
 @dp.message(lambda msg: msg.from_user.id in user_data and "ism" not in user_data[msg.from_user.id])
 async def get_name(message: types.Message):
     user_data[message.from_user.id]["ism"] = message.text
