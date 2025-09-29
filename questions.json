@@ -1,0 +1,12 @@
+[
+  {
+    "question": "2 + 2 nechaga teng?",
+    "options": ["3", "4", "5", "6"],
+    "answer": "4"
+  },
+  {
+    "question": "O‘zbekiston poytaxti qaysi?",
+    "options": ["Toshkent", "Samarqand", "Buxoro", "Andijon"],
+    "answer": "Toshkent"
+  }
+]
