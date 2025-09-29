@@ -6,8 +6,8 @@ from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 from openpyxl import Workbook, load_workbook
 import os
 
-TOKEN = "BOT_TOKENINGIZNI_KIRITIN"   # BotFather dan olingan token
-CHANNEL_ID = "@kanal_nomi"           # Kanal username
+TOKEN = "8433010343:AAFfenNG_z8bBdXxNjzW0dJhRGkFHsjRbs0"   # BotFather dan olingan token
+CHANNEL_ID = "@Aqllilik_balosi"           # Kanal username
 
 # Excel faylni yaratish
 if not os.path.exists("users.xlsx"):
